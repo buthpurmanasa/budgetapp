@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>app</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <h3 class=" mx-5 mt-4" style="color: blueviolet;"><b>BUDGET APP</b></h3>
+    <div style="display: flex;">
+        <div class="row col-sm-4 mx-5 mt-5">
+            <div class="card border-success mb-5 " style="background-color: lightcoral;">
+                <div class="card-body text-center ">
+                    <h5 class="card-title text-white">Please Enter Your Budget</h5>
+                    <input type="number" class="border-danger" id="totalBudget" placeholder="">
+
+                </div>
+            </div>
+            <div class="card" style="border-color: blue; background-color: black;">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-warning">Please Enter Your Expense</h5>
+                    <input type="text" id="expenseName" placeholder="" class="border-warning">
+                    <h5 class="card-title mt-5 text-info">Please Enter Your Expense Amount</h5>
+                    <input type="number" id="expenseAmount" class="border-info" placeholder="Amount"> <br>
+                    <button type="button" class="btn btn-outline-success mt-4" id="addExpense">Add</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class=" d-flex">
+            <div class="mt-5 " style="width: 18rem;">
+
+                <div class="card-body">
+                    <h2 style="color: darkmagenta;"><b>Summary</b></h2>
+                    <div class="budget-summary d-flex gap-5 mt-5 mx-5">
+
+                        <div class="income-list">
+                            <h3><b>Budget</b></h3>
+                            <i class="fa fa-money fs-4 text-primary" aria-hidden="true"></i>
+                            <ul id="totalBudgetDisplay" style="color: fuchsia;"><b>$0</b></ul>
+                        </div>
+                        <div class="expenses-list ">
+                            <h3><b>Expenses</b></h3>
+                            <i class='fa fa-credit-card fs-4 text-primary'></i>
+                            <ul id="totalExpensesDisplay" style="color: darkgreen;"><b>$0</b></ul>
+                        </div>
+                        <div class="budget-total">
+                            <h3><b>TotalBudget</b></h3>
+                            <i class="fa fa-dollar fs-4 text-primary"></i> <br>
+                            <span id="remainingBalanceDisplay" style="color: palevioletred;"><b>0</b></span>
+                        </div>
+                    </div>
+                </div>
+                <div class=" mt-5" style="width: 18rem;">
+
+                    <div class="card-body">
+                        <div class="budget-summary d-flex mx-5">
+
+
+                            <div class="expenses-list ">
+                                <h3><b>ExpenseValue</b></h3>
+
+                                <ul id="expenseList" style="color: indianred;"><b></b></ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+
+            const totalBudgetInput = document.getElementById("totalBudget");
+            const expenseNameInput = document.getElementById("expenseName");
+            const expenseAmountInput = document.getElementById("expenseAmount");
+            const addExpenseButton = document.getElementById("addExpense");
+
+
+
+            let budget = 0;
+            let expenses = [];
+
+
+
+            function handleBudgetInput() {
+                budget = parseFloat(totalBudget.value);
+                updateBalance();
+            }
+
+            totalBudget.addEventListener("input", handleBudgetInput);
+            addExpenseButton.addEventListener("click", handleAddExpense);
+
+            function handleAddExpense() {
+                const name = expenseNameInput.value;
+                const amount = parseFloat(expenseAmountInput.value);
+                expenseNameInput.value = "";
+                expenseAmountInput.value = "";
+
+                if (name && amount) {
+                    expenses.push({ name, amount });
+                    updateExpensesList();
+                    updateBalance();
+                } else {
+                    alert("enter the values")
+                }
+            }
+            //  these are for displaying
+            const totalBudgetDisplay = document.getElementById("totalBudgetDisplay");
+            const totalExpensesDisplay = document.getElementById("totalExpensesDisplay");
+            const remainingBalanceDisplay = document.getElementById("remainingBalanceDisplay");
+
+            function updateBalance() {
+                let totalExpenses = 0;
+                for (let i = 0; i < expenses.length; i++) {
+                    totalExpenses += expenses[i].amount;
+                }
+
+                let remainingBalance = budget - totalExpenses;
+
+                totalBudgetDisplay.textContent = budget;
+                totalExpensesDisplay.textContent = totalExpenses;
+                remainingBalanceDisplay.textContent = remainingBalance;
+            }
+            // this function is for list creation
+
+            const expenseList = document.getElementById("expenseList");
+
+            function updateExpensesList() {
+                expenseList.innerHTML = "";
+                for (let i = 0; i < expenses.length; i++) {
+                    const expense = expenses[i];
+                    const li = document.createElement("li");
+                    li.textContent = expense.name + "$" + expense.amount;
+                    expenseList.appendChild(li);
+                };
+            }
+
+
+
+        </script>
+
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
